@@ -35,6 +35,10 @@ mongoose.connect('mongodb://test:test@ds113019.mlab.com:13019/voting-system',()=
 
 app.use(bodyParser.json());
 
+app.get('/',(req,res)=>{
+    res.send('<h1>Welcome</h1>');
+});
+
 app.post('/vote',(req,res)=>{
     if(new Date().getTime() >= new Date('March 13, 2018 02:00:00 GMT+05:30').getTime()){
         res.status(400).send('late');
