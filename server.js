@@ -90,26 +90,29 @@ app.post('/',(req,res)=>{
     
     var {ID} = req.body;
     var secNo;
-    
     var patt1 = /\/\d\d\//g;
     var result = ID.match(patt1);
-    secNo = result[0].replace(/\//g,''); 
-    secNo = parseInt(secNo); 
-    
-    User.find({ID}).then((voter)=>{
-        var token = jwt.sign({ID:voter.ID,name:voter.name},'some secret key').toString();
+    if(result !=null){    
+        secNo = result[0].replace(/\//g,''); 
+        secNo = parseInt(secNo);
+        User.find({ID}).then((voter)=>{
+            var token = jwt.sign({ID:voter.ID,name:voter.name},'some secret key').toString();
 
-        User.findOneAndUpdate({ID},{$push:{token}}).then((doc)=>{          
-            Can.find({secNo}).then((doc)=>{
-                
-                res.header('x-auth',token).status(200).send({ID,doc});
-            }).catch((e)=>{
-                res.status(400).send(e);
+            User.findOneAndUpdate({ID},{$push:{token}}).then((doc)=>{          
+                Can.find({secNo}).then((doc)=>{
+                    
+                    res.header('x-auth',token).status(200).send({ID,doc});
+                }).catch((e)=>{
+                    res.status(400).send({msg:'Invalid credentials'});
+                });
             });
+        }).catch((e)=>{
+            res.status(400).send({msg:'Invalid credentials'});
         });
-    }).catch((e)=>{
-        res.status(400).send();
-    });
+    }
+    else{
+        res.status(400).send({msg:'Invalid credentials'});
+    }
 });
 
 app.listen(port,()=>{

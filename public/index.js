@@ -8,14 +8,21 @@ $(document).ready(function(){
             url: '/',
             data: JSON.stringify({ID:id}), 
             success: 
-
             function (data,status) {
-                var list = data.doc[0].candidates;
-            $('.container').html(`<h1>select your candidate</h1><hr><p id="ID">${data.ID}</p>`);
-            for(var i=0;i<list.length;i++){
-                $('.container').append(`<hr><label><input type="radio" name="vote" class="card-inputelement" partyNo=${list[i].partyNo} id=${list[i].canNo}><div><span class="name">${list[i].name}</span><br><span class="age">${list[i].age}</span><br><span class="party">${list[i].party}</span><br><span class="canNo">${list[i].partyNo}</span><br><p class="desc">${list[i].desc}</p></div></label>`);
-            }
-            $('.container').append('<button id="vote">vote</button><script src="./index.js"></script>');
+                if(status ==200){
+                    var list = data.doc[0].candidates;
+                    $('.container').html(`<h1>select your candidate</h1><hr><p id="ID">${data.ID}</p>`);
+                    for(var i=0;i<list.length;i++){
+                        $('.container').append(`<hr><label><input type="radio" name="vote" class="card-inputelement" partyNo=${list[i].partyNo} id=${list[i].canNo}><div><span class="name">${list[i].name}</span><br><span class="age">${list[i].age}</span><br><span class="party">${list[i].party}</span><br><span class="canNo">${list[i].partyNo}</span><br><p class="desc">${list[i].desc}</p></div></label>`);
+                    }
+                    $('.container').append('<button id="vote">vote</button><script src="./index.js"></script>');
+                }
+                else{
+                $('.container').html('<p>Invalid Credentials</p><a href="/">try again</a><script src="./index.js"></script>')                    
+                }
+            },
+            error:function(data,status){
+                $('.container').html('<p>Invalid Credentials</p><a href="/">try again</a><script src="./index.js"></script>')
             },
             contentType: "application/json",
             dataType: 'json'
