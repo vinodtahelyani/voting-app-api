@@ -29,66 +29,88 @@ var User = mongoose.model('voter',{
     token:{type:String}
 });
 
+
+var Vote = mongoose.model('votes',{
+    voterId:{
+        type:String,
+        required:true,
+        // unique:true,
+        minlength:[1,'Invalid voter ID'],
+    },
+    partyNo:{
+        type:Number,
+        required:true,
+        minlength:[1,'Inavlid Party ID'],
+    },
+    canNo:{
+        type:Number,
+        required:true,
+        minlength:[1,'Inavlid Party ID'],
+    }
+});
+
 mongoose.connect('mongodb://test:test@ds113019.mlab.com:13019/voting-system',()=>{
     console.log('connected to db successfully');
-})
+});
 
 app.use(bodyParser.json());
-
+app.use(express.static('public'));
 app.get('/',(req,res)=>{
-    res.send('<h1>Welcome</h1>');
+    res.sendFile(__dirname+'/index.html');
 });
 
 app.post('/vote',(req,res)=>{
-    if(new Date().getTime() >= new Date('March 13, 2018 02:00:00 GMT+05:30').getTime()){
-        res.status(400).send('late');
-        return;
-    }
-
+    // if(new Date().getTime() >= new Date('March 13, 2018 02:00:00 GMT+05:30').getTime()){
+    //     res.status(400).send('late');
+    //     return;
+    // }
     
-    var {voterId,partyNo} = req.body;
-    const voteSchema = new Schema({
-        voterId:{
-            type:String,
-            required:true,
-            unique:true,
-            minlength:[1,'Invalid voter ID'],
-        },
-        partyNo:{
-            type:Number,
-            required:true,
-            minlength:[1,'Inavlid Party ID'],
-        },  
-    });
-    var Vote = mongoose.model('votes',voteSchema);
-    var vote = new Vote({
+    
+    var {voterId,partyNo,canNo} = req.body;
+    
+    var vote1 = new Vote({
         voterId:voterId,
         partyNo:partyNo,
+        canNo:canNo
     });
-    vote.save().then((newVote)=>{
-        res.status(200).send('ok');
+    vote1.save().then((newVote)=>{
+        
+        res.status(200).send({msg:'ok'});
     }).catch((e)=>{
-        res.status(400).send(e);
+        
+        res.status(400).send({error:e});
     });
 });
 
-app.get('/candis/:id',(req,res)=>{
-    var id = req.params.id;
-    // todo get secno from id 45/23/de
-    User.find({ID:'45/23/de'}).then((voter)=>{
+app.get('/dummy',(req,res)=>{
+    res.sendFile(__dirname+'/index2.html');
+});
+
+app.post('/',(req,res)=>{
+    
+    var {ID} = req.body;
+    var secNo;
+    
+    var patt1 = /\/\d\d\//g;
+    var result = ID.match(patt1);
+    secNo = result[0].replace(/\//g,''); 
+    secNo = parseInt(secNo); 
+    
+    User.find({ID}).then((voter)=>{
         var token = jwt.sign({ID:voter.ID,name:voter.name},'some secret key').toString();
-        User.findOneAndUpdate({ID:id},{$push:{token}}).then((doc)=>{
-            Can.find({secNo:78}).then((doc)=>{
-                res.header('x-auth',token).send(doc);
+
+        User.findOneAndUpdate({ID},{$push:{token}}).then((doc)=>{          
+            Can.find({secNo}).then((doc)=>{
+                
+                res.header('x-auth',token).status(200).send({ID,doc});
             }).catch((e)=>{
                 res.status(400).send(e);
             });
         });
     }).catch((e)=>{
-        res.status(400).send(); 
+        res.status(400).send();
     });
 });
-
 
 app.listen(port,()=>{
     console.log(`listening to ${port}`);
