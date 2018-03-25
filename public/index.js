@@ -9,7 +9,9 @@ $(document).ready(function(){
             data: JSON.stringify({ID:id}), 
             success: 
             function (data,status) {
-                if(status ==200){
+                console.log(status);
+                
+                if(status =='success'){
                     var list = data.doc[0].candidates;
                     $('.container').html(`<h1>select your candidate</h1><hr><p id="ID">${data.ID}</p>`);
                     for(var i=0;i<list.length;i++){

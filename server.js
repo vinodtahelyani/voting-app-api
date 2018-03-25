@@ -100,14 +100,17 @@ app.post('/',(req,res)=>{
 
             User.findOneAndUpdate({ID},{$push:{token}}).then((doc)=>{          
                 Can.find({secNo}).then((doc)=>{
-                    
+                    console.log('pp');                    
                     res.header('x-auth',token).status(200).send({ID,doc});
                 }).catch((e)=>{
+                    console.log('ddd');
+                    
                     res.status(400).send({msg:'Invalid credentials'});
                 });
             });
         }).catch((e)=>{
             res.status(400).send({msg:'Invalid credentials'});
+            console.log('eee');            
         });
     }
     else{
