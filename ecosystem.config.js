@@ -7,7 +7,7 @@ module.exports = {
     production: {
       user: 'ubuntu',
       host: 'ec2-13-127-245-239.ap-south-1.compute.amazonaws.com',
-      key: '~/.ssh/tutorial-2.pem',
+      key: '~/.ssh/tutorial.pem',
       ref: 'origin/master',
       repo: 'git@github.com:vinodtahelyani/voting-app-api',
       path: '/home/ubuntu/tutorial-2',
