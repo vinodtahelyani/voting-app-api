@@ -46,7 +46,7 @@ $(document).ready(function(){
                 $('body').html('<div id="output">cool!</div>')
             },
             error: function(e){
-                $('body').html('<div id="output"><p>Invalid Credentials</p><a href="/">try again</a><script src="./index.js"></script></div>');
+                $('body').html('<div id="output"><p>Not Allowed!</p><a href="/">try again</a><script src="./index.js"></script></div>');
             },
             contentType: "application/json",
             dataType: 'json'
