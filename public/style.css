@@ -30,7 +30,109 @@ body {
     font-size: 2rem;
 }
 
+#submit, #vote {
+    margin: 10px auto;
+    background: transparent;
+    border: 1px solid #000000;
+    font-family: sans-serif;
+    font-weight: 500;
+    font-size: 2rem;
+    padding: .5rem 1rem;
+}
+
+#vote {
+    padding: 0;
+    width: 200px;
+    
+    margin: 10px auto;
+    display: block;
+    text-transform: uppercase;
+
+}
+
+#submit:hover, #vote:hover {
+    background: #00000083;
+    color: #808E5C;
+    cursor: pointer;
+}
+
 hr {
-    width: 100%;
+    width: 60%;
+    margin: 10px auto 0;
     border-bottom: 2px solid #000000;
+}
+h1 {
+    text-align: left;
+    font-size: 40px;
+    width: 60%;
+    margin: auto;
+    text-transform: capitalize;
+}
+
+#ID{
+    text-align: left;
+    font-size: 30px;
+    width: 60%;
+    margin: auto;
+    text-transform: capitalize;
+}
+
+.container {
+    text-align: left;
+
+}
+
+label input {
+    opacity:0;
+}
+
+label div {
+    width: 60%;
+    margin: auto;
+    border: 1px solid #00000083;
+    border-radius: 5px;
+}
+label input:checked ~ div {
+    background-color: #00000083;
+}
+
+.name , .canNo{
+    /* background-color: #00000083; */
+    width: 49%;
+    display: inline-block;
+    padding: 10px 5px;
+    border-radius: 5px 0 0;
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 1px solid black;
+}
+.canNo {
+    margin: 0 -10px 0 ;
+    text-align: right;
+    width: 52%;
+    padding-right: 15px; 
+}
+
+.age, .party {
+    display: inline-block;
+    width: 49%;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.desc {
+    padding: 10px 5px;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+#output {
+    text-align: center;
+    font-weight: bold;
+    font-size: 40px;
+    padding: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }

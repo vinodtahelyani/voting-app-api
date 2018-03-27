@@ -34,7 +34,7 @@ var Vote = mongoose.model('votes',{
     voterId:{
         type:String,
         required:true,
-        // unique:true,
+        unique:true,
         minlength:[1,'Invalid voter ID'],
     },
     partyNo:{
@@ -100,17 +100,21 @@ app.post('/',(req,res)=>{
 
             User.findOneAndUpdate({ID},{$push:{token}}).then((doc)=>{          
                 Can.find({secNo}).then((doc)=>{
-                    console.log('pp');                    
+                    
+                    if(doc.length != 0){               
                     res.header('x-auth',token).status(200).send({ID,doc});
+                    }
+                    else{
+                        res.status(400).send({msg:'Invalid credentials'});
+                    }
                 }).catch((e)=>{
-                    console.log('ddd');
+                    
                     
                     res.status(400).send({msg:'Invalid credentials'});
                 });
             });
         }).catch((e)=>{
-            res.status(400).send({msg:'Invalid credentials'});
-            console.log('eee');            
+            res.status(400).send({msg:'Invalid credentials'});           
         });
     }
     else{
